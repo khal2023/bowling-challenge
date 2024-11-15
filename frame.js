@@ -14,10 +14,12 @@ class Frame {
         this.isSpare = this.getSpare()
     }
     validateFirstBall = (score1) => {
-        return score1 <= 10 ? score1: "You must have made a mistake"
+        if (score1 > 10) throw new Error("Scores must be below 10 for the first roll")
+        return score1
     }
     validateSecondBall = (score2) => {
-        return score2 <= 10 - this.firstBall ? score2: "You must have made a mistake"
+        if (score2 > 10 - this.firstBall) throw new Error(`The total across both rolls cannot exceed 10. Current total: ${this.firstBall + score2}`)
+        return score2
     }
     getStrike = () => {
         if (this.thirdBall != null){

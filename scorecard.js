@@ -2,7 +2,6 @@ Frame = require('./frame')
 
 class Scorecard {
     constructor() {
-        this.score = 0;
         this.framesPlayed = [];
     }
     addFrame = (score1, score2, score3 = null) => {
@@ -14,54 +13,50 @@ class Scorecard {
     }
 
     calculateScore = () => {
+        let score = 0;
         for (let i = 0; i < this.framesPlayed.length; i++) {
             // Edge frame checks
-            let finalFrame = false;
-            let penultimateFrame = false;
-            if (i === 8){
-                penultimateFrame = true
-            }
-            else if (i === 9) {
-                finalFrame = true
-            }
+            const finalFrame = this.finalFrameCheck(i)
+            const penultimateFrame = this.penultimateFrameCheck(i)
+
             // Assigniments
             let currentFrame = this.framesPlayed[i]
             let nextFrame = this.framesPlayed[i + 1]
             let nextNextFrame = this.framesPlayed[i + 2]
 
             // Logic
-            // Nested if, get into sepearate function
             if (currentFrame.isStrike) {
-                if (finalFrame) {
-                    this.score += currentFrame.getFrameTotal()
-                }
-                else if (penultimateFrame) {
-                    this.score += 10 + nextFrame.firstBall + nextFrame.secondBall
-                }
-                else if (nextFrame.isStrike) {
-                    this.score += 10 + 10 + nextNextFrame.firstBall
-                }
-                else {
-                    this.score += 10 + nextFrame.getFrameTotal()
-                }
+                score = this.getStrikeScore(currentFrame, nextFrame, nextNextFrame, finalFrame, penultimateFrame, score)
             }
             else if (currentFrame.isSpare && !finalFrame) {
-                this.score += 10 + nextFrame.firstBall
-
+                score = this.getSpareScore(nextFrame, score)
             }
             else { 
-                this.score += currentFrame.getFrameTotal()
+                score += currentFrame.getFrameTotal()
             }
         }
-        return this.score
+        return score
     }
+    getStrikeScore = (currentFrame, nextFrame, nextNextFrame, finalFrame, penultimateFrame, score) => {
+        if (finalFrame) {
+            score += currentFrame.getFrameTotal()
+        }
+        else if (penultimateFrame) {
+            score += 10 + nextFrame.firstBall + nextFrame.secondBall
+        }
+        else if (nextFrame.isStrike) {
+            score += 10 + 10 + nextNextFrame.firstBall
+        }
+        else {
+            score += 10 + nextFrame.getFrameTotal()
+        }
+        return score;
+    }
+    getSpareScore = (nextFrame, score) => {
+        return score += 10 + nextFrame.firstBall
+    }
+    finalFrameCheck = i => i === 9;
+    penultimateFrameCheck = i => i === 8;
 }
-
-scorecard = new Scorecard
-for (let i = 0; i < 9; i++) {
-    scorecard.addFrame(10, 0)
-}
-scorecard.addFrame(10, 10, 10)
-console.log(scorecard.calculateScore())
 
 module.exports = Scorecard

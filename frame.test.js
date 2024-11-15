@@ -2,12 +2,11 @@ Frame = require('./frame')
 
 describe('Frame', () => {
     it("validates the first ball if below 10", () => {
-        frame = new Frame(6, 7)
+        frame = new Frame(6, 2)
         expect(frame.firstBall).toBe(6)
     })
     it('refuses first ball if above 10', () => {
-        frame = new Frame(11, 5)
-        expect(frame.firstBall).toEqual("You must have made a mistake")
+        expect(() => new Frame(11, 5)).toThrow("Scores must be below 10 for the first roll")
     })
     it('correctly sets strike to true if firstBall is 10', () => {
         frame = new Frame(10, 0)
@@ -18,12 +17,11 @@ describe('Frame', () => {
         expect(frame.secondBall).toBe(6)
     })
     it('validates second ball if total pins for frame exactly 10', () => {
-            frame = new Frame(3, 7)
-            expect(frame.secondBall).toBe(7)
+        frame = new Frame(3, 7)
+        expect(frame.secondBall).toBe(7)
     })
     it('refuses second ball if total over frame now exceeds 10', () => {
-        frame = new Frame(9, 5)
-        expect(frame.secondBall).toEqual("You must have made a mistake")
+        expect(() => new Frame(6, 8)).toThrow("The total across both rolls cannot exceed 10. Current total: 14")
     })
     it('sets spare to true if 10 is reached over the frame', () => {
         frame = new Frame(8, 2)
