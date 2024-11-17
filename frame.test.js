@@ -6,7 +6,7 @@ describe('Frame', () => {
         expect(frame.firstBall).toBe(6)
     })
     it('refuses first ball if above 10', () => {
-        expect(() => new Frame(11, 5)).toThrow("Scores must be below 10 for the first roll")
+        expect(() => new Frame(11, 5)).toThrow("Scores must be between 0 and 10 for the first roll")
     })
     it('correctly sets strike to true if firstBall is 10', () => {
         frame = new Frame(10, 0)
@@ -38,5 +38,8 @@ describe('Frame', () => {
     it("gives correct score for a perfect final frame", () => {
         frame = new Frame(10, 10, 10)
         expect(frame.getFrameTotal()).toBe(30)
+    })
+    it("refuses rolls over 10 on the final frame", () => {
+        expect(() => new Frame(10, 10, 11)).toThrow("Pins knocked down must be between 0 and 10")
     })
 })

@@ -92,4 +92,7 @@ describe('scorecard', () => {
         scorecard.addFrame(3, 7, 10)
         expect(scorecard.calculateScore()).toBe(143)
     })
+    it('refuses non integer input', () => {
+        expect(() => scorecard.addFrame("x", "y")).toThrow("Integer input only please.")
+    })
 })
