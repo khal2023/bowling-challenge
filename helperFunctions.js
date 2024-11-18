@@ -54,6 +54,10 @@ const getFinalFrameScore = async (scorecard, i) => {
                     scorecard.addFrame(parseInt(score1), parseInt(score2), parseInt(score3))
                     break;
                 }
+                else {
+                    scorecard.addFrame(parseInt(score1), parseInt(score2), 0)
+                    break;
+                }
             }
             else if (parseInt(score1) != 10) {
                 score2 = prompt("Roll 2: ")

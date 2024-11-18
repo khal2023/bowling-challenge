@@ -35,7 +35,9 @@ const main = async () => {
             await getFinalFrameScore(scorecard, i)
         }
     }
+    await sleep(200);
     console.log(`\nFINAL SCORE: ${scorecard.calculateScore()}`)
+    await sleep(1500);
     console.log("\nGAME SUMMARY: ")
     console.log((createSummaryTable(scorecard)).toString())
 }
